@@ -1,51 +1,25 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const twilio = require('twilio');
-require('dotenv').config();
+const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 const app = express();
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-const client = twilio("AC4f50bca190b22f65073655122498502f", "2d006c866cf8ba2e459b9472baf2b4d8");
+// Incoming message handler
+app.post('/webhook', (req, res) => {
+  const incomingMsg = req.body.Body;
+  const from = req.body.From;
 
-// POST API to send WhatsApp message
-app.post('/api/send-message', async (req, res) => {
-    const { to, roomNumber, requestType, message } = req.body;
+  console.log(`Received message from ${from}: ${incomingMsg}`);
 
-    if (!to || !requestType) {
-        return res.status(400).json({ error: 'Missing required fields: to, requestType' });
-    }
+  const twiml = new MessagingResponse();
+  twiml.message(`Hi! We received your message: "${incomingMsg}"`);
 
-    // Simple routing logic based on requestType
-    let responseText = '';
-    switch (requestType.toLowerCase()) {
-        case 'room_service':
-            responseText = `Room ${roomNumber}: Room service request received. ${message || ''} Housekeeping has been notified.`;
-            break;
-        case 'maintenance':
-            responseText = `Room ${roomNumber}: Maintenance request received. ${message || ''} Maintenance team has been alerted.`;
-            break;
-        case 'general':
-            responseText = `Room ${roomNumber}: Thank you for your message. Guest Services will respond shortly. ${message || ''}`;
-            break;
-        default:
-            responseText = `Room ${roomNumber}: Unrecognized request type. Please contact Guest Services.`;
-            break;
-    }
-
-    try {
-        await client.messages.create({
-            body: responseText,
-            from: "whatsapp:+14155238886",
-            to: `whatsapp:${to}`
-        });
-        res.status(200).json({ success: true, message: 'Message sent successfully.' });
-    } catch (error) {
-        console.error('Error sending WhatsApp message:', error.message);
-        res.status(500).json({ success: false, error: error.message });
-    }
+  res.set('Content-Type', 'text/xml');
+  res.send(twiml.toString());
 });
 
-app.listen(3000, () => {
-    console.log('API listening on port 3000');
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server listening on port ${PORT}`);
 });

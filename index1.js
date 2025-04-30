@@ -6,7 +6,7 @@ require('dotenv').config();
 const app = express();
 app.use(bodyParser.json());
 
-const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+const client = twilio("AC4f50bca190b22f65073655122498502f", "2d006c866cf8ba2e459b9472baf2b4d8");
 
 // POST API to send WhatsApp message
 app.post('/api/send-message', async (req, res) => {
@@ -36,7 +36,7 @@ app.post('/api/send-message', async (req, res) => {
     try {
         await client.messages.create({
             body: responseText,
-            from: process.env.TWILIO_WHATSAPP_NUMBER,
+            from: "whatsapp:+14155238886",
             to: `whatsapp:${to}`
         });
         res.status(200).json({ success: true, message: 'Message sent successfully.' });
