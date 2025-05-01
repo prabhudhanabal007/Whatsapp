@@ -28,19 +28,9 @@ app.post('/api/inbound-webhook', (req, res) => {
           twiml.message(responseText);
           break;
       case '3':
-        try {
-            const call = client.calls.create({
-              twiml: '<Response><Say>Connecting you to the front desk. Please hold.</Say><Dial>+919884831723</Dial></Response>',
-              to: '+919884831723', // Customer's phone number (must be voice-capable)
-              from: '+14155238886'  // Your Twilio voice-enabled number
-            });
-      
-            console.log('📞 Voice call initiated:', call.sid);
-            res.status(200).send({ success: true, sid: call.sid });
-          } catch (err) {
-            console.error('❌ Call failed:', err.message);
-            res.status(500).send({ error: err.message });
-          }
+        const twiml = new twilio.twiml.VoiceResponse();
+  twiml.say('Connecting you to the front desk. Please hold.', { voice: 'alice' });
+  twiml.dial('+919884831723'); // Front desk number
             break;
       case 'general':
           responseText = `Room ${roomNumber}: Thank you for your message. Guest Services will respond shortly.`;
