@@ -13,17 +13,18 @@ app.post('/api/inbound-webhook', (req, res) => {
   console.log(`Received message from ${from}: ${incomingMsg}`);
 
   const roomNumber = "303";
+  const guest_name = "Prabhu Dhanabal";
   const twiml = new MessagingResponse();
 
   // Simple routing logic based on requestType
   let responseText = '';
   switch (incomingMsg.toLowerCase()) {
       case 'room_service':
-          responseText = `Thank you, ${roomNumber}! We have received your room service request for Room ${roomNumber}.Housekeeping has been notified.They will reach you shortly`;
+          responseText = `Thank you, ${guest_name}! We have received your room service request for Room ${roomNumber}.Housekeeping has been notified.They will reach you shortly`;
           twiml.message(responseText);
           break;
       case 'maintenance':
-          responseText = `Thank you, ${roomNumber}! We have received your maintenance request for Room ${roomNumber}.Maintenance team has been alerted.They will reach you shortly`;
+          responseText = `Thank you, ${guest_name}! We have received your maintenance request for Room ${roomNumber}.Maintenance team has been alerted.They will reach you shortly`;
           twiml.message(responseText);
           break;
       case 'general':
