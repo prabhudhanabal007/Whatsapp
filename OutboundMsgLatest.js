@@ -15,12 +15,18 @@ const fromWhatsAppNumber = 'whatsapp:+14155238886'; // Twilio Sandbox or live nu
 const toWhatsAppNumber = 'whatsapp:+917395967936'; // Recipient number
 
 app.post('/api/outbound-message', async (req, res) => {
-  const messageBody = 
-    `Good day Prabhu Dhanabal and welcome to ANS Pride. ` +
-    `You’ve successfully checked in on 2025-05-01 at 11:30 AM. ` +
-    `Your room number is 303, AC Suite. ` +
-    `Check-out is scheduled for 2025-05-02 at 11:00 AM. ` +
-    `We hope you enjoy your stay! Please let us know if you need anything during your stay.`;
+    const messageBody = 
+    `Good day Prabhu Dhanabal and welcome to ANS Pride.\n` +
+    `You’ve successfully checked in on 2025-05-01 at 11:30 AM.\n` +
+    `Your room number is 303, AC Suite.\n` +
+    `Check-out is scheduled for 2025-05-02 at 11:00 AM.\n\n` +
+    `We hope you enjoy your stay!\n\n` +
+    `🛎️ How can we assist you today?\n` +
+    `1️⃣ Room Service\n` +
+    `2️⃣ Maintenance\n` +
+    `3️⃣ Connect with Front Desk\n\n` +
+    `Please reply with the number corresponding to your request.`;
+  
 
   try {
     const message = await client.messages.create({
