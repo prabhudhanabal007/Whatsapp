@@ -28,10 +28,9 @@ app.post('/api/inbound-webhook', (req, res) => {
           twiml.message(responseText);
           break;
       case '3':
-        const twiml = new twilio.twiml.VoiceResponse();
-  twiml.say('Connecting you to the front desk. Please hold.', { voice: 'alice' });
-  twiml.dial('+919884831723'); // Front desk number
-            break;
+        responseText = `📞 Tap to call: +919884831723\n\n` 
+        twiml.message(responseText);
+        break;        
       case 'general':
           responseText = `Room ${roomNumber}: Thank you for your message. Guest Services will respond shortly.`;
           twiml.message(responseText);
